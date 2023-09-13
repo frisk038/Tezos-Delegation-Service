@@ -1,0 +1,13 @@
+database:
+  conn-url: postgres://postgres:oro@localhost:5432/postgres
+
+tezos-client:
+  url: https://api.tzkt.io/v1/operations/delegations
+  timeout: 10s
+  limit: 5
+
+cron:
+  spec: "*/2 * * * *"
+
+api:
+  port: 8080
