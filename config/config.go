@@ -3,6 +3,7 @@ package config
 import (
 	"time"
 
+	"github.com/frisk038/tezos-delegation-service/infrastructure/repository"
 	"github.com/ilyakaznacheev/cleanenv"
 )
 
@@ -16,10 +17,6 @@ type tezosConfig struct {
 	Limit   int           `yaml:"limit" env-default:"1"`
 }
 
-type databaseConfig struct {
-	ConnUrl string `yaml:"conn-url" env:"CONNURL"`
-}
-
 type cronConfig struct {
 	Spec string `yaml:"spec" env-default:"*/10 * * * *"`
 }
@@ -27,7 +24,7 @@ type cronConfig struct {
 type Config struct {
 	Api      apiConfig      `yaml:"api"`
 	Tezos    tezosConfig    `yaml:"tezos-client"`
-	Database databaseConfig `yaml:"database"`
+	Database repository.Config `yaml:"database"`
 	Cron     cronConfig     `yaml:"cron"`
 }
 
