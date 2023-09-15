@@ -7,7 +7,7 @@ tezos-client:
   limit: 5
 
 cron:
-  spec: "*/2 * * * *"
+  spec: "*/1 * * * *"
 
 api:
-  port: 8080
+  port: ":8080"

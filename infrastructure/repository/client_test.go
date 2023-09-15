@@ -78,6 +78,13 @@ func testSelectDelegations(t *testing.T, c *Client) {
 	tm := time.Now().UTC()
 	dgs := []entity.Delegation{
 		{
+			Amount:    425,
+			Block:     "block4",
+			Id:        5600,
+			Delegator: "dg4",
+			TimeStamp: tm.AddDate(2, 0, 0),
+		},
+		{
 			Amount:    1000034,
 			Block:     "block1",
 			Id:        3034,
@@ -102,24 +109,32 @@ func testSelectDelegations(t *testing.T, c *Client) {
 	require.NoError(t, c.InsertDelegations(ctx, dgs))
 
 	t.Run("success", func(t *testing.T) {
-		got, err := c.SelectDelegations(ctx, 5, 0)
+		got, err := c.SelectDelegations(ctx, entity.DelegationRequest{Limit: 5, Offset: 0})
 		assert.NoError(t, err)
 		assert.Equal(t, dgs, got)
 	})
 
+	t.Run("success_with_year", func(t *testing.T) {
+		y, err := time.Parse(time.DateOnly, "2023-01-01")
+		require.NoError(t, err)
+		got, err := c.SelectDelegations(ctx, entity.DelegationRequest{Limit: 5, Offset: 0, Date: y})
+		assert.NoError(t, err)
+		assert.Equal(t, dgs[1:], got)
+	})
+
 	t.Run("success_with_paging", func(t *testing.T) {
-		got, err := c.SelectDelegations(ctx, 1, 0)
+		got, err := c.SelectDelegations(ctx, entity.DelegationRequest{Limit: 1, Offset: 0})
 		assert.NoError(t, err)
 		assert.Equal(t, dgs[:1], got)
 
-		got, err = c.SelectDelegations(ctx, 1, 1)
+		got, err = c.SelectDelegations(ctx, entity.DelegationRequest{Limit: 1, Offset: 1})
 		assert.NoError(t, err)
 		assert.Equal(t, dgs[1:2], got)
 	})
 
 	t.Run("no_rows", func(t *testing.T) {
 		clearTable(ctx, t, c.conn)
-		got, err := c.SelectDelegations(ctx, 5, 0)
+		got, err := c.SelectDelegations(ctx, entity.DelegationRequest{Limit: 5, Offset: 0})
 		assert.NoError(t, err)
 		assert.Empty(t, got)
 	})

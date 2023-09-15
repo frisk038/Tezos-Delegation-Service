@@ -3,8 +3,10 @@ package main
 import (
 	"os"
 
+	"github.com/frisk038/tezos-delegation-service/cmd/api/handler"
 	"github.com/frisk038/tezos-delegation-service/cmd/cron"
 	"github.com/frisk038/tezos-delegation-service/config"
+	"github.com/frisk038/tezos-delegation-service/domain/usecase/delegation"
 	"github.com/frisk038/tezos-delegation-service/domain/usecase/poller"
 	"github.com/frisk038/tezos-delegation-service/infrastructure/adapter/tezos"
 	"github.com/frisk038/tezos-delegation-service/infrastructure/repository"
@@ -34,6 +36,9 @@ func main() {
 	if err != nil {
 		logger.Error(err.Error())
 	}
-
 	cr.Cr.Start()
+
+	dgUC := delegation.New(db)
+	router := handler.Init(dgUC)
+	router.Run(config.Cfg.Api.Port)
 }

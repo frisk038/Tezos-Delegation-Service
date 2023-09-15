@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/frisk038/tezos-delegation-service/domain/entity"
@@ -25,15 +26,17 @@ const (
 	insertDelegation = `INSERT INTO delegations
 							(id, ts, amount, delegator, block)
 						VALUES ($1, $2, $3, $4, $5);`
-	selectDelegation = `SELECT ts, amount, delegator, block, id
-						FROM delegations
-						ORDER BY ts DESC
-						LIMIT $1
-						OFFSET $2;`
 	selectLastDelegation = `SELECT ts
 							FROM delegations
 							ORDER BY ts DESC
 							LIMIT 1;`
+	selectDelegation = `SELECT ts, amount, delegator, block, id
+							FROM delegations
+							%s
+							ORDER BY ts DESC
+							LIMIT $1
+							OFFSET $2;`
+	whereClause = `WHERE ts >= $3 AND ts < $4`
 )
 
 // New creates a new PostgreSQL client for handling delegations.
@@ -69,8 +72,15 @@ func (c *Client) InsertDelegations(ctx context.Context, dgs []entity.Delegation)
 }
 
 // Select return a slice of delegation from the database, it also handles pagination.
-func (c *Client) SelectDelegations(ctx context.Context, limit, offset int) ([]entity.Delegation, error) {
-	rows, err := c.conn.Query(ctx, selectDelegation, limit, offset)
+func (c *Client) SelectDelegations(ctx context.Context, dgr entity.DelegationRequest) ([]entity.Delegation, error) {
+	param := []any{dgr.Limit, dgr.Offset}
+	where := ""
+	if !dgr.Date.IsZero() {
+		where = whereClause
+		param = append(param, dgr.Date, dgr.Date.AddDate(1, 0, 0))
+	}
+
+	rows, err := c.conn.Query(ctx, fmt.Sprintf(selectDelegation, where), param...)
 	if err != nil {
 		return nil, err
 	}

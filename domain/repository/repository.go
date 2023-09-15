@@ -13,5 +13,5 @@ type Poller interface {
 }
 
 type Delegation interface {
-	SelectDelegations(ctx context.Context, limit, offset int) ([]entity.Delegation, error)
+	SelectDelegations(ctx context.Context, dgr entity.DelegationRequest) ([]entity.Delegation, error)
 }

@@ -9,7 +9,7 @@ import (
 )
 
 type apiConfig struct {
-	Port int `yaml:"port" env:"PORT" env-default:"8080"`
+	Port string `yaml:"port" env:"PORT" env-default:":8080"`
 }
 
 type tezosConfig struct {

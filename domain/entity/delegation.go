@@ -10,3 +10,10 @@ type Delegation struct {
 	Delegator string
 	TimeStamp time.Time
 }
+
+// DelegationRequest represent a query in order to show the delegations
+type DelegationRequest struct{
+	Limit int
+	Offset int
+	Date time.Time
+}
