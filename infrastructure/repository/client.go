@@ -22,8 +22,13 @@ type Client struct {
 
 const (
 	insertDelegation = `INSERT INTO delegations
-						(id, ts, amount, delegator, block)
+							(id, ts, amount, delegator, block)
 						VALUES ($1, $2, $3, $4, $5);`
+	selectDelegation = `SELECT ts, amount, delegator, block, id
+						FROM delegations
+						ORDER BY ts DESC
+						LIMIT $1
+						OFFSET $2;`
 )
 
 // New creates a new PostgreSQL client for handling delegations.
@@ -56,4 +61,25 @@ func (c *Client) InsertDelegations(ctx context.Context, dgs []entity.Delegation)
 	}
 
 	return nil
+}
+
+// Select return a slice of delegation from the database, it also handles pagination.
+func (c *Client) SelectDelegations(ctx context.Context, limit, offset int) ([]entity.Delegation, error) {
+	rows, err := c.conn.Query(ctx, selectDelegation, limit, offset)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var res []entity.Delegation
+	for rows.Next() {
+		var dg entity.Delegation
+		err = rows.Scan(&dg.TimeStamp, &dg.Amount,&dg.Delegator, &dg.Block, &dg.Id)
+		if err != nil {
+			return nil, err
+		}
+		res = append(res, dg)
+	}
+
+	return res, rows.Err()
 }
