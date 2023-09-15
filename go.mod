@@ -3,12 +3,11 @@ module github.com/frisk038/tezos-delegation-service
 go 1.21.1
 
 require (
-	github.com/golang-migrate/migrate v3.5.4+incompatible
 	github.com/golang-migrate/migrate/v4 v4.16.2
 	github.com/ilyakaznacheev/cleanenv v1.5.0
 	github.com/jackc/pgx/v5 v5.4.3
 	github.com/jarcoal/httpmock v1.3.1
-	github.com/mattes/migrate v3.0.1+incompatible
+	github.com/robfig/cron/v3 v3.0.1
 	github.com/stretchr/testify v1.8.4
 	github.com/testcontainers/testcontainers-go v0.23.0
 	golang.org/x/exp v0.0.0-20230905200255-921286631fa9

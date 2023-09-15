@@ -3,6 +3,7 @@ package config
 import (
 	"time"
 
+	"github.com/frisk038/tezos-delegation-service/cmd/cron"
 	"github.com/frisk038/tezos-delegation-service/infrastructure/repository"
 	"github.com/ilyakaznacheev/cleanenv"
 )
@@ -17,15 +18,11 @@ type tezosConfig struct {
 	Limit   int           `yaml:"limit" env-default:"1"`
 }
 
-type cronConfig struct {
-	Spec string `yaml:"spec" env-default:"*/10 * * * *"`
-}
-
 type Config struct {
 	Api      apiConfig      `yaml:"api"`
 	Tezos    tezosConfig    `yaml:"tezos-client"`
 	Database repository.Config `yaml:"database"`
-	Cron     cronConfig     `yaml:"cron"`
+	Cron     cron.Config     `yaml:"cron"`
 }
 
 var Cfg Config
