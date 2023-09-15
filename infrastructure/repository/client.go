@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"time"
 
 	"github.com/frisk038/tezos-delegation-service/domain/entity"
 	"github.com/jackc/pgx/v5"
@@ -29,6 +30,10 @@ const (
 						ORDER BY ts DESC
 						LIMIT $1
 						OFFSET $2;`
+	selectLastDelegation = `SELECT ts
+							FROM delegations
+							ORDER BY ts DESC
+							LIMIT 1;`
 )
 
 // New creates a new PostgreSQL client for handling delegations.
@@ -82,4 +87,17 @@ func (c *Client) SelectDelegations(ctx context.Context, limit, offset int) ([]en
 	}
 
 	return res, rows.Err()
+}
+
+func (c *Client) SelectLastDelegation(ctx context.Context) (time.Time, error) {
+	var lastUpdate time.Time
+	err := c.conn.QueryRow(ctx, selectLastDelegation).Scan(&lastUpdate)
+	if err != nil {
+		if err == pgx.ErrNoRows {
+			return time.Time{}, nil
+		}
+		return time.Time{}, err
+	}
+
+	return lastUpdate, nil
 }

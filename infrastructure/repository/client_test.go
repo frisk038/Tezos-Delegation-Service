@@ -25,6 +25,7 @@ func TestClient_Integration(t *testing.T) {
 	for name, fn := range map[string]func(t *testing.T, c *Client){
 		"testInsertDelegations" : testInsertDelegations,
 		"testSelectDelegations": testSelectDelegations,
+		"testSelectLastDelegation": testSelectLastDelegation,
 	} {
 		t.Run(name, func(t *testing.T) {
 			fn(t, c)
@@ -121,5 +122,46 @@ func testSelectDelegations(t *testing.T, c *Client) {
 		got, err := c.SelectDelegations(ctx, 5, 0)
 		assert.NoError(t, err)
 		assert.Empty(t, got)
+	})
+}
+
+func testSelectLastDelegation(t *testing.T, c *Client) {
+	ctx := context.Background()
+	tm := time.Now().UTC()
+	dgs := []entity.Delegation{
+		{
+			Amount: 1000034,
+			Block: "block1",
+			Id: 3034,
+			Delegator: "dg1",
+			TimeStamp: tm.Add(time.Minute),
+		},
+		{
+			Amount: 123400,
+			Block: "block2",
+			Id: 30004,
+			Delegator: "dg2",
+			TimeStamp: tm.Add(3*time.Minute),
+		},
+		{
+			Amount: 100004,
+			Block: "block3",
+			Id: 300890,
+			Delegator: "dg3",
+			TimeStamp: tm,
+		},
+	}
+	require.NoError(t, c.InsertDelegations(ctx, dgs))
+
+	t.Run("success", func(t *testing.T) {
+		got, err := c.SelectLastDelegation(ctx)
+		assert.NoError(t, err)
+		assert.Equal(t, tm.Add(3*time.Minute), got)
+	})
+	t.Run("no_rows", func(t *testing.T) {
+		clearTable(ctx, t, c.conn)
+		got, err := c.SelectLastDelegation(ctx)
+		assert.NoError(t, err)
+		assert.Equal(t, time.Time{}, got)
 	})
 }
