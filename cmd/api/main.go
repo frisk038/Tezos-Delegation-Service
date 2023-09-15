@@ -1,12 +1,11 @@
 package main
 
 import (
-	"context"
-	"fmt"
 	"os"
-	"time"
 
+	"github.com/frisk038/tezos-delegation-service/cmd/cron"
 	"github.com/frisk038/tezos-delegation-service/config"
+	"github.com/frisk038/tezos-delegation-service/domain/usecase/poller"
 	"github.com/frisk038/tezos-delegation-service/infrastructure/adapter/tezos"
 	"github.com/frisk038/tezos-delegation-service/infrastructure/repository"
 	"golang.org/x/exp/slog"
@@ -25,13 +24,16 @@ func main() {
 		logger.Error(err.Error())
 	}
 
-	client, _ := tezos.New()
-	testTime0, _ := time.Parse(time.RFC3339, os.Args[2])
-	arr, err := client.GetDelegations(context.Background(), testTime0)
-	fmt.Println(arr, len(arr), err)
-
-	err = db.InsertDelegations(context.Background(), arr)
+	tzApi, err := tezos.New()
 	if err != nil {
 		logger.Error(err.Error())
 	}
+
+	pollerUC := poller.New(db, tzApi)
+	cr, err := cron.New(config.Cfg.Cron, pollerUC, logger)
+	if err != nil {
+		logger.Error(err.Error())
+	}
+
+	cr.Cr.Start()
 }

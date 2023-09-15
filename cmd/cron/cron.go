@@ -1,6 +1,8 @@
 package cron
 
 import (
+	"context"
+
 	"github.com/robfig/cron/v3"
 	"golang.org/x/exp/slog"
 )
@@ -10,21 +12,29 @@ type Config struct {
 }
 
 type Cron struct {
-	cr  *cron.Cron
+	Cr  *cron.Cron
 	log *slog.Logger
 }
 
-func New(cfg Config, log *slog.Logger) (*Cron, error) {
+type delegationFetcher interface {
+	Fetch(ctx context.Context) error
+}
+
+func New(cfg Config, fetcher delegationFetcher, log *slog.Logger) (*Cron, error) {
 	c := cron.New()
+
 	_, err := c.AddFunc(cfg.Spec, func() {
-		println("runing...")
+		err := fetcher.Fetch(context.Background())
+		if err != nil {
+			log.Error(err.Error())
+		}
 	})
 	if err != nil {
 		return nil, err
 	}
 
 	return &Cron{
-		cr:  c,
+		Cr:  c,
 		log: log,
 	}, nil
 }
