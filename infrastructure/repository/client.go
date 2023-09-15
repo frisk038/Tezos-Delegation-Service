@@ -79,7 +79,7 @@ func (c *Client) SelectDelegations(ctx context.Context, limit, offset int) ([]en
 	var res []entity.Delegation
 	for rows.Next() {
 		var dg entity.Delegation
-		err = rows.Scan(&dg.TimeStamp, &dg.Amount,&dg.Delegator, &dg.Block, &dg.Id)
+		err = rows.Scan(&dg.TimeStamp, &dg.Amount, &dg.Delegator, &dg.Block, &dg.Id)
 		if err != nil {
 			return nil, err
 		}

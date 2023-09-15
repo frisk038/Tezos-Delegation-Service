@@ -7,13 +7,13 @@ import (
 	"time"
 
 	"github.com/frisk038/tezos-delegation-service/config"
-	"github.com/frisk038/tezos-delegation-service/infrastructure/adapters/tezos"
+	"github.com/frisk038/tezos-delegation-service/infrastructure/adapter/tezos"
 	"github.com/frisk038/tezos-delegation-service/infrastructure/repository"
 	"golang.org/x/exp/slog"
 )
 
 func main() {
-	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil,))
+	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 
 	err := config.Load(os.Args[1])
 	if err != nil {

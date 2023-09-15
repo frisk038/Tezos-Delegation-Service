@@ -19,10 +19,10 @@ type tezosConfig struct {
 }
 
 type Config struct {
-	Api      apiConfig      `yaml:"api"`
-	Tezos    tezosConfig    `yaml:"tezos-client"`
+	Api      apiConfig         `yaml:"api"`
+	Tezos    tezosConfig       `yaml:"tezos-client"`
 	Database repository.Config `yaml:"database"`
-	Cron     cron.Config     `yaml:"cron"`
+	Cron     cron.Config       `yaml:"cron"`
 }
 
 var Cfg Config

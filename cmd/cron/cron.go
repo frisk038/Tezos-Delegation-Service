@@ -9,8 +9,8 @@ type Config struct {
 	Spec string `yaml:"spec" env-default:"@hourly"`
 }
 
-type Cron struct{
-	cr *cron.Cron
+type Cron struct {
+	cr  *cron.Cron
 	log *slog.Logger
 }
 
@@ -24,7 +24,7 @@ func New(cfg Config, log *slog.Logger) (*Cron, error) {
 	}
 
 	return &Cron{
-		cr: c,
+		cr:  c,
 		log: log,
 	}, nil
 }

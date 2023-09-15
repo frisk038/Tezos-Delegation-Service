@@ -15,7 +15,7 @@ func TestClient_Integration(t *testing.T) {
 	tc := initContainer(t)
 	c, err := New(Config{ConnUrl: tc.uri}, &slog.Logger{})
 	assert.NoError(t, err)
-	defer func(){
+	defer func() {
 		c.conn.Close()
 		_ = tc.Terminate(context.Background())
 	}()
@@ -23,8 +23,8 @@ func TestClient_Integration(t *testing.T) {
 	migrateDb(t, tc)
 
 	for name, fn := range map[string]func(t *testing.T, c *Client){
-		"testInsertDelegations" : testInsertDelegations,
-		"testSelectDelegations": testSelectDelegations,
+		"testInsertDelegations":    testInsertDelegations,
+		"testSelectDelegations":    testSelectDelegations,
 		"testSelectLastDelegation": testSelectLastDelegation,
 	} {
 		t.Run(name, func(t *testing.T) {
@@ -39,16 +39,16 @@ func testInsertDelegations(t *testing.T, c *Client) {
 	tm := time.Now().UTC()
 	dgs := []entity.Delegation{
 		{
-			Amount: 1000034,
-			Block: "block2",
-			Id: 3034,
+			Amount:    1000034,
+			Block:     "block2",
+			Id:        3034,
 			Delegator: "dg2",
 			TimeStamp: tm,
 		},
 		{
-			Amount: 1234,
-			Block: "block1",
-			Id: 30004,
+			Amount:    1234,
+			Block:     "block1",
+			Id:        30004,
 			Delegator: "dg1",
 			TimeStamp: tm,
 		},
@@ -62,7 +62,7 @@ func testInsertDelegations(t *testing.T, c *Client) {
 		assert.NoError(t, err)
 		defer rows.Close()
 		var got []entity.Delegation
-		for rows.Next(){
+		for rows.Next() {
 			var dg entity.Delegation
 			err = rows.Scan(&dg.Amount, &dg.Block, &dg.Id, &dg.TimeStamp, &dg.Delegator)
 			assert.NoError(t, err)
@@ -78,23 +78,23 @@ func testSelectDelegations(t *testing.T, c *Client) {
 	tm := time.Now().UTC()
 	dgs := []entity.Delegation{
 		{
-			Amount: 1000034,
-			Block: "block1",
-			Id: 3034,
+			Amount:    1000034,
+			Block:     "block1",
+			Id:        3034,
 			Delegator: "dg1",
-			TimeStamp: tm.Add(2*time.Minute),
+			TimeStamp: tm.Add(2 * time.Minute),
 		},
 		{
-			Amount: 123400,
-			Block: "block2",
-			Id: 30004,
+			Amount:    123400,
+			Block:     "block2",
+			Id:        30004,
 			Delegator: "dg2",
 			TimeStamp: tm.Add(time.Minute),
 		},
 		{
-			Amount: 100004,
-			Block: "block3",
-			Id: 300890,
+			Amount:    100004,
+			Block:     "block3",
+			Id:        300890,
 			Delegator: "dg3",
 			TimeStamp: tm,
 		},
@@ -130,23 +130,23 @@ func testSelectLastDelegation(t *testing.T, c *Client) {
 	tm := time.Now().UTC()
 	dgs := []entity.Delegation{
 		{
-			Amount: 1000034,
-			Block: "block1",
-			Id: 3034,
+			Amount:    1000034,
+			Block:     "block1",
+			Id:        3034,
 			Delegator: "dg1",
 			TimeStamp: tm.Add(time.Minute),
 		},
 		{
-			Amount: 123400,
-			Block: "block2",
-			Id: 30004,
+			Amount:    123400,
+			Block:     "block2",
+			Id:        30004,
 			Delegator: "dg2",
-			TimeStamp: tm.Add(3*time.Minute),
+			TimeStamp: tm.Add(3 * time.Minute),
 		},
 		{
-			Amount: 100004,
-			Block: "block3",
-			Id: 300890,
+			Amount:    100004,
+			Block:     "block3",
+			Id:        300890,
 			Delegator: "dg3",
 			TimeStamp: tm,
 		},
