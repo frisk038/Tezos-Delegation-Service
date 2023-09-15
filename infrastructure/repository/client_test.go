@@ -23,11 +23,12 @@ func TestClient_Integration(t *testing.T) {
 	migrateDb(t, tc)
 
 	for name, fn := range map[string]func(t *testing.T, c *Client){
-		// "testInsertDelegations" : testInsertDelegations,
+		"testInsertDelegations" : testInsertDelegations,
 		"testSelectDelegations": testSelectDelegations,
 	} {
 		t.Run(name, func(t *testing.T) {
 			fn(t, c)
+			clearTable(context.Background(), t, c.conn)
 		})
 	}
 }
