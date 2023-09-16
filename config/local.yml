@@ -11,3 +11,5 @@ cron:
 
 api:
   port: ":8080"
+  default-limit: 10
+  max-limit: 100

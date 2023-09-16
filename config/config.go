@@ -3,14 +3,11 @@ package config
 import (
 	"time"
 
+	"github.com/frisk038/tezos-delegation-service/cmd/api/handler"
 	"github.com/frisk038/tezos-delegation-service/cmd/cron"
 	"github.com/frisk038/tezos-delegation-service/infrastructure/repository"
 	"github.com/ilyakaznacheev/cleanenv"
 )
-
-type apiConfig struct {
-	Port string `yaml:"port" env:"PORT" env-default:":8080"`
-}
 
 type tezosConfig struct {
 	Url     string        `yaml:"url" env:"TEZOS-API"`
@@ -19,7 +16,7 @@ type tezosConfig struct {
 }
 
 type Config struct {
-	Api      apiConfig         `yaml:"api"`
+	Api      handler.Config    `yaml:"api"`
 	Tezos    tezosConfig       `yaml:"tezos-client"`
 	Database repository.Config `yaml:"database"`
 	Cron     cron.Config       `yaml:"cron"`

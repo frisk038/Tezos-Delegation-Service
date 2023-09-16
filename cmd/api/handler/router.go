@@ -5,8 +5,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Init(dgUC *delegation.UseCase) *gin.Engine {
+func Init(cfg Config, dgUC *delegation.UseCase) *gin.Engine {
 	r := gin.Default()
-	r.GET("/xtz/delegations", GetDelegations(dgUC))
+	r.GET("/xtz/delegations", GetDelegations(cfg, dgUC))
 	return r
 }

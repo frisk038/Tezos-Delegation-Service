@@ -39,7 +39,7 @@ func main() {
 	cr.Cr.Start()
 
 	dgUC := delegation.New(db)
-	router := handler.Init(dgUC)
+	router := handler.Init(config.Cfg.Api, dgUC)
 	err = router.Run(config.Cfg.Api.Port)
 	if err != nil {
 		logger.Error(err.Error())
