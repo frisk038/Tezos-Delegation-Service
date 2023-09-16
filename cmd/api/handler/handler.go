@@ -16,6 +16,12 @@ type delegationGetter interface {
 	GetDelegations(ctx context.Context, drq entity.DelegationRequest) ([]entity.Delegation, error)
 }
 
+type Config struct {
+	Port         string `yaml:"port" env:"PORT" env-default:":8080"`
+	MaxLimit     int    `yaml:"max-limit" env:"MAX-LIMIT" env-default:"100"`
+	DefaultLimit int    `yaml:"default-limit" env:"DEFAULT-LIMIT" env-default:"10"`
+}
+
 type dgJs struct {
 	TimeStamp time.Time `json:"timestamp"`
 	Amount    int64     `json:"amount"`
@@ -23,11 +29,11 @@ type dgJs struct {
 	Block     string    `json:"block"`
 }
 
-func GetDelegations(getter delegationGetter) gin.HandlerFunc {
+func GetDelegations(cfg Config, getter delegationGetter) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var err error
 		var tm time.Time
-		limit := 10
+		limit := cfg.DefaultLimit
 		offset := 0
 
 		limitRq := c.Query("limit")
@@ -37,12 +43,21 @@ func GetDelegations(getter delegationGetter) gin.HandlerFunc {
 				_ = c.AbortWithError(http.StatusBadRequest, errors.New("limit must be numeric"))
 				return
 			}
+			if limit > cfg.MaxLimit || limit < 0 {
+				_ = c.AbortWithError(http.StatusBadRequest, fmt.Errorf("limit must be [0; %d]", cfg.MaxLimit))
+				return
+			}
 		}
 		offsetRq := c.Query("offset")
 		if len(offsetRq) != 0 {
 			offset, err = strconv.Atoi(offsetRq)
 			if err != nil {
 				_ = c.AbortWithError(http.StatusBadRequest, errors.New("offset must be numeric"))
+				return
+			}
+
+			if offset < 0 {
+				_ = c.AbortWithError(http.StatusBadRequest, errors.New("offset must be positive"))
 				return
 			}
 		}
@@ -60,10 +75,9 @@ func GetDelegations(getter delegationGetter) gin.HandlerFunc {
 				return
 			}
 
-			//2023-09-15T15:00:00
-			tm, err = time.Parse(time.RFC3339, fmt.Sprintf("%d-01-01", year))
+			tm, err = time.Parse(time.DateOnly, fmt.Sprintf("%d-01-01", year))
 			if err != nil {
-				_ = c.AbortWithError(http.StatusBadRequest, errors.New("cant format correct date with given year"))
+				_ = c.AbortWithError(http.StatusBadRequest, fmt.Errorf("cant format correct date with given year %w", err))
 				return
 			}
 		}
@@ -78,7 +92,7 @@ func GetDelegations(getter delegationGetter) gin.HandlerFunc {
 			return
 		}
 
-		var resp []dgJs
+		resp := []dgJs{}
 		for _, dg := range dgs {
 			resp = append(resp, dgJs{
 				TimeStamp: dg.TimeStamp,
