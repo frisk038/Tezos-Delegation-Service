@@ -22,13 +22,23 @@ type Config struct {
 	DefaultLimit int    `yaml:"default-limit" env:"DEFAULT-LIMIT" env-default:"10"`
 }
 
-type dgJs struct {
+type delegationJs struct {
 	TimeStamp time.Time `json:"timestamp"`
 	Amount    int64     `json:"amount"`
 	Delegator string    `json:"delegator"`
 	Block     string    `json:"block"`
 }
 
+// @Summary Get delegations
+// @Description Retrieve a list of delegations
+// @ID get-delegations
+// @Accept  json
+// @Produce  json
+// @Param limit query int false "Limit the number of results (default is 10)"
+// @Param offset query int false "Offset for pagination"
+// @Param year query int false "Filter by year (optional)"
+// @Success 200 {array} delegationJs
+// @Router /xtz/delegations [get]
 func GetDelegations(cfg Config, getter delegationGetter) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var err error
@@ -92,9 +102,9 @@ func GetDelegations(cfg Config, getter delegationGetter) gin.HandlerFunc {
 			return
 		}
 
-		resp := []dgJs{}
+		resp := []delegationJs{}
 		for _, dg := range dgs {
-			resp = append(resp, dgJs{
+			resp = append(resp, delegationJs{
 				TimeStamp: dg.TimeStamp,
 				Amount:    dg.Amount,
 				Delegator: dg.Delegator,

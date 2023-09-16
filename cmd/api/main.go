@@ -6,6 +6,7 @@ import (
 	"github.com/frisk038/tezos-delegation-service/cmd/api/handler"
 	"github.com/frisk038/tezos-delegation-service/cmd/cron"
 	"github.com/frisk038/tezos-delegation-service/config"
+	_ "github.com/frisk038/tezos-delegation-service/docs"
 	"github.com/frisk038/tezos-delegation-service/domain/usecase/delegation"
 	"github.com/frisk038/tezos-delegation-service/domain/usecase/poller"
 	"github.com/frisk038/tezos-delegation-service/infrastructure/adapter/tezos"
@@ -13,6 +14,19 @@ import (
 	"golang.org/x/exp/slog"
 )
 
+// @title           Tezos Delegation Service
+// @version         1.0
+// @description     This is a simple service that will poll/return delegations on tezos protocol
+// @termsOfService  http://swagger.io/terms/
+
+// @contact.name   API Support
+// @contact.email  o.roux2@gmail.com
+
+// @host      localhost:8080
+// @BasePath  /api/v1
+
+// @externalDocs.description  TezosAPI
+// @externalDocs.url          https://api.tzkt.io/#operation/Operations_GetDelegations
 func main() {
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 
