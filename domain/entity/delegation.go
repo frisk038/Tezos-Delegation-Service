@@ -12,8 +12,8 @@ type Delegation struct {
 }
 
 // DelegationRequest represent a query in order to show the delegations
-type DelegationRequest struct{
-	Limit int
+type DelegationRequest struct {
+	Limit  int
 	Offset int
-	Date time.Time
+	Date   time.Time
 }

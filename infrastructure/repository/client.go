@@ -41,13 +41,13 @@ const (
 
 // New creates a new PostgreSQL client for handling delegations.
 func New(cfg Config, logger *slog.Logger) (*Client, error) {
-	dbpool, err := pgxpool.New(context.Background(), cfg.ConnUrl)
+	dbPool, err := pgxpool.New(context.Background(), cfg.ConnUrl)
 	if err != nil {
 		return nil, err
 	}
 
 	return &Client{
-		conn: dbpool,
+		conn: dbPool,
 		log:  logger,
 	}, nil
 }
@@ -61,7 +61,7 @@ func (c *Client) InsertDelegations(ctx context.Context, dgs []entity.Delegation)
 	}
 
 	br := c.conn.SendBatch(ctx, batch)
-	defer br.Close()
+	defer func() { _ = br.Close() }()
 
 	_, err := br.Exec()
 	if err != nil {
@@ -71,7 +71,7 @@ func (c *Client) InsertDelegations(ctx context.Context, dgs []entity.Delegation)
 	return nil
 }
 
-// Select return a slice of delegation from the database, it also handles pagination.
+// SelectDelegations return a slice of delegation from the database, it also handles pagination.
 func (c *Client) SelectDelegations(ctx context.Context, dgr entity.DelegationRequest) ([]entity.Delegation, error) {
 	param := []any{dgr.Limit, dgr.Offset}
 	where := ""

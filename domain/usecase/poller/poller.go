@@ -7,20 +7,20 @@ import (
 	"github.com/frisk038/tezos-delegation-service/domain/repository"
 )
 
-type Poller struct {
+type UseCase struct {
 	repo repository.Poller
 	api  adapter.API
 }
 
-func New(repo repository.Poller, api adapter.API) *Poller {
-	return &Poller{
+func New(repo repository.Poller, api adapter.API) *UseCase {
+	return &UseCase{
 		repo: repo,
 		api:  api,
 	}
 }
 
-func (p *Poller) Fetch(ctx context.Context) error {
-	lastDttm, err := p.repo.SelectLastDelegation(ctx)
+func (uc *UseCase) Fetch(ctx context.Context) error {
+	lastDttm, err := uc.repo.SelectLastDelegation(ctx)
 	if err != nil {
 		return err
 	}
@@ -28,7 +28,7 @@ func (p *Poller) Fetch(ctx context.Context) error {
 		return nil
 	}
 
-	dgs, err := p.api.GetDelegations(ctx, lastDttm)
+	dgs, err := uc.api.GetDelegations(ctx, lastDttm)
 	if err != nil {
 		return err
 	}
@@ -36,5 +36,5 @@ func (p *Poller) Fetch(ctx context.Context) error {
 		return nil
 	}
 
-	return p.repo.InsertDelegations(ctx, dgs)
+	return uc.repo.InsertDelegations(ctx, dgs)
 }

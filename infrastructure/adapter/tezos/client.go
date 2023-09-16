@@ -38,7 +38,7 @@ type delegation struct {
 
 // New creates a new instance of the client
 func New() (*Client, error) {
-	url, err := url.Parse(config.Cfg.Tezos.Url)
+	urlApi, err := url.Parse(config.Cfg.Tezos.Url)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func New() (*Client, error) {
 		Client: &http.Client{
 			Timeout: config.Cfg.Tezos.Timeout,
 		},
-		Url:   url,
+		Url:   urlApi,
 		Limit: config.Cfg.Tezos.Limit,
 	}, nil
 }
@@ -57,7 +57,7 @@ func (c *Client) GetDelegations(ctx context.Context, startTime time.Time) ([]ent
 	offset := 0
 	var result []entity.Delegation
 	for {
-		chunk, err := c.getDelegations(context.Background(), startTime, offset)
+		chunk, err := c.getDelegations(ctx, startTime, offset)
 		if err != nil {
 			return nil, err
 		}
@@ -74,7 +74,7 @@ func (c *Client) GetDelegations(ctx context.Context, startTime time.Time) ([]ent
 }
 
 // getDelegations get delegations from specified timestamp with an offset to skip what we already read
-func (c *Client) getDelegations(ctx context.Context, startTime time.Time, offset int) ([]entity.Delegation, error) {
+func (c *Client) getDelegations(_ context.Context, startTime time.Time, offset int) ([]entity.Delegation, error) {
 	q := c.Url.Query()
 	q.Set("timestamp.gt", startTime.Format(time.RFC3339))
 	q.Set("offset", strconv.Itoa(offset))
@@ -85,7 +85,7 @@ func (c *Client) getDelegations(ctx context.Context, startTime time.Time, offset
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("api returned non-OK status: %v", resp.Status)

@@ -40,5 +40,8 @@ func main() {
 
 	dgUC := delegation.New(db)
 	router := handler.Init(dgUC)
-	router.Run(config.Cfg.Api.Port)
+	err = router.Run(config.Cfg.Api.Port)
+	if err != nil {
+		logger.Error(err.Error())
+	}
 }

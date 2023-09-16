@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Init(dgUC *delegation.DelegationUC) *gin.Engine {
+func Init(dgUC *delegation.UseCase) *gin.Engine {
 	r := gin.Default()
 	r.GET("/xtz/delegations", GetDelegations(dgUC))
 	return r

@@ -7,16 +7,16 @@ import (
 	"github.com/frisk038/tezos-delegation-service/domain/repository"
 )
 
-type DelegationUC struct {
+type UseCase struct {
 	repo repository.Delegation
 }
 
-func New(repo repository.Delegation) *DelegationUC {
-	return &DelegationUC{
+func New(repo repository.Delegation) *UseCase {
+	return &UseCase{
 		repo: repo,
 	}
 }
 
-func (dg* DelegationUC) GetDelegations(ctx context.Context, drq entity.DelegationRequest) ([]entity.Delegation, error){
-	return dg.repo.SelectDelegations(ctx, drq)
+func (uc *UseCase) GetDelegations(ctx context.Context, drq entity.DelegationRequest) ([]entity.Delegation, error) {
+	return uc.repo.SelectDelegations(ctx, drq)
 }
