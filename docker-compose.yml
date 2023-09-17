@@ -11,7 +11,7 @@ services:
     ports:
       - "5432:5432"
     networks:
-      - mynetwork
+      - tznetwork
     volumes:
       - ./migration/deploy:/docker-entrypoint-initdb.d
 
@@ -22,10 +22,11 @@ services:
       - "8080:8080"
     environment:
       - CONNURL=postgres://postgres:oro@db:5432/tezosdb
+      - PORT=8080
     depends_on:
       - db
     networks:
-      - mynetwork
+      - tznetwork
 
 networks:
-  mynetwork:
+  tznetwork:

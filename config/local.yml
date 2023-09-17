@@ -3,8 +3,8 @@ database:
 
 tezos-client:
   url: https://api.tzkt.io/v1/operations/delegations
-  timeout: 10s
-  limit: 5
+  timeout: 15s
+  limit: 100
 
 cron:
   spec: "*/1 * * * *"

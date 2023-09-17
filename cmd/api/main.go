@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"os"
 
 	"github.com/frisk038/tezos-delegation-service/cmd/api/handler"
@@ -27,36 +28,43 @@ import (
 // @externalDocs.description  TezosAPI
 // @externalDocs.url          https://api.tzkt.io/#operation/Operations_GetDelegations
 func main() {
-	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
+	log := slog.New(slog.NewJSONHandler(os.Stdout, nil))
+	if err := initDeps(log); err != nil {
+		log.Error(err.Error())
+		os.Exit(1)
+	}
 
+}
+
+func printHelp(log *slog.Logger) {
+	log.Info("Usage: ./api conf-file.yml")
+}
+
+func initDeps(log *slog.Logger) error {
 	if len(os.Args) != 2 {
-		printHelp(logger)
-		return
+		printHelp(log)
+		return errors.New("wrong count of arguments")
 	}
 	err := config.Load(os.Args[1])
 	if err != nil {
-		logger.Error(err.Error())
-		printHelp(logger)
-		return
+		printHelp(log)
+		return err
 	}
 
-	db, err := repository.New(config.Cfg.Database, logger)
+	db, err := repository.New(config.Cfg.Database, log)
 	if err != nil {
-		logger.Error(err.Error())
-		return
+		return err
 	}
 
 	tzApi, err := tezos.New()
 	if err != nil {
-		logger.Error(err.Error())
-		return
+		return err
 	}
 
 	pollerUC := poller.New(db, tzApi)
-	cr, err := cron.New(config.Cfg.Cron, pollerUC, logger)
+	cr, err := cron.New(config.Cfg.Cron, pollerUC, log)
 	if err != nil {
-		logger.Error(err.Error())
-		return
+		return err
 	}
 	cr.Cr.Start()
 
@@ -65,15 +73,12 @@ func main() {
 
 	port := os.Getenv("PORT")
 	if port == "" {
-		logger.Error("$PORT must be set")
+		return errors.New("$PORT must be set")
 	}
 	err = router.Run(":" + port)
 	if err != nil {
-		logger.Error(err.Error())
-		return
+		return err
 	}
-}
 
-func printHelp(log *slog.Logger) {
-	log.Info("Usage: ./api conf-file.yml")
+	return nil
 }
