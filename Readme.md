@@ -1,23 +1,16 @@
 <div align="center">
 <h1 align="center">
-<img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/ec559a9f6bfd399b82bb44393651661b08aaf7ba/icons/folder-markdown-open.svg" width="100" />
 <br>Tezos-Delegation-Service
 </h1>
-<h3>◦ Delegate with ease on Tezos</h3>
+<h3>◦ Track and display delegations</h3>
 <h3>◦ Developed with the software and tools listed below.</h3>
 
 <p align="center">
 <img src="https://img.shields.io/badge/containerd-575757.svg?style&logo=containerd&logoColor=white" alt="containerd" />
-<img src="https://img.shields.io/badge/Files-4285F4.svg?style&logo=Files&logoColor=white" alt="Files" />
 <img src="https://img.shields.io/badge/Docker-2496ED.svg?style&logo=Docker&logoColor=white" alt="Docker" />
 <img src="https://img.shields.io/badge/Docker-2496ED.svg?style&logo=Docker&logoColor=white" alt="Docker" />
 <img src="https://img.shields.io/badge/Go-00ADD8.svg?style&logo=Go&logoColor=white" alt="Go" />
-<img src="https://img.shields.io/badge/JSON-000000.svg?style&logo=JSON&logoColor=white" alt="JSON" />
 </p>
-<img src="https://img.shields.io/github/languages/top/frisk038/Tezos-Delegation-Service?style&color=5D6D7E" alt="GitHub top language" />
-<img src="https://img.shields.io/github/languages/code-size/frisk038/Tezos-Delegation-Service?style&color=5D6D7E" alt="GitHub code size in bytes" />
-<img src="https://img.shields.io/github/commit-activity/m/frisk038/Tezos-Delegation-Service?style&color=5D6D7E" alt="GitHub commit activity" />
-<img src="https://img.shields.io/github/license/frisk038/Tezos-Delegation-Service?style&color=5D6D7E" alt="GitHub license" />
 </div>
 
 ---
