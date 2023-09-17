@@ -33,6 +33,8 @@
 
 The Tezos Delegation Service project aims to provide an API for retrieving and managing Tezos protocol delegations. It's polling the Tezos blockchain, retrieving and storing delegation data in a PostgreSQL database, and exposing this data through API endpoints.
 
+You can have a look at the [swagger](https://tezos-delegation-api.ew.r.appspot.com/swagger/index.html#/default/get-delegations)
+
 ---
 
 

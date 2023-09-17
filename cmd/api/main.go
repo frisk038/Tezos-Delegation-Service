@@ -37,15 +37,21 @@ func main() {
 }
 
 func printHelp(log *slog.Logger) {
-	log.Info("Usage: ./api conf-file.yml")
+	log.Info("Usage: ./api conf-file.yml or CONFIG_FILE='conf-file.yml' ./api")
 }
 
 func initDeps(log *slog.Logger) error {
-	if len(os.Args) != 2 {
+	configFile := os.Getenv("CONFIG_FILE")
+	if len(os.Args) == 2 && os.Args[1] != "" {
+		configFile = os.Args[1]
+	}
+
+	if configFile == "" {
 		printHelp(log)
 		return errors.New("wrong count of arguments")
 	}
-	err := config.Load(os.Args[1])
+
+	err := config.Load(configFile)
 	if err != nil {
 		printHelp(log)
 		return err
