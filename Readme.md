@@ -8,7 +8,6 @@
 <p align="center">
 <img src="https://img.shields.io/badge/containerd-575757.svg?style&logo=containerd&logoColor=white" alt="containerd" />
 <img src="https://img.shields.io/badge/Docker-2496ED.svg?style&logo=Docker&logoColor=white" alt="Docker" />
-<img src="https://img.shields.io/badge/Docker-2496ED.svg?style&logo=Docker&logoColor=white" alt="Docker" />
 <img src="https://img.shields.io/badge/Go-00ADD8.svg?style&logo=Go&logoColor=white" alt="Go" />
 </p>
 </div>
@@ -25,6 +24,7 @@
   - [🎮 Using Tezos-Delegation-Service](#-using-tezos-delegation-service)
   - [🧪 Running Tests](#-running-tests)
   - [🧪 Stop the service](#-stop-the-service)
+  - [🧪 Cleaning/Uninstalling](#-cleaninguninstalling)
 
 ---
 
@@ -105,3 +105,9 @@ This one launch every test of the project
 ```sh
 make down
 ```
+
+### 🧪 Cleaning/Uninstalling
+```sh
+make clean
+```
+This command will stop/remove the containers and images
