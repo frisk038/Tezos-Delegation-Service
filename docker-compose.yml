@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:latest
+    container_name: tezos-pg
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: oro
+      POSTGRES_DB: tezosdb
+    ports:
+      - "5432:5432"
+    networks:
+      - mynetwork
+    volumes:
+      - ./migration/deploy:/docker-entrypoint-initdb.d
+
+  app:
+    build:
+      context: .
+    ports:
+      - "8080:8080"
+    environment:
+      - CONNURL=postgres://postgres:oro@db:5432/tezosdb
+    depends_on:
+      - db
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:

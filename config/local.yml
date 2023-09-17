@@ -1,5 +1,5 @@
 database:
-  conn-url: postgres://postgres:oro@localhost:5432/postgres
+  conn-url: postgres://postgres:oro@localhost:5432/tezosdb
 
 tezos-client:
   url: https://api.tzkt.io/v1/operations/delegations

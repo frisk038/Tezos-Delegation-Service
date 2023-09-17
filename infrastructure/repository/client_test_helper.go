@@ -56,7 +56,7 @@ func initContainer(t *testing.T) *testContainer {
 // migrateDb performs database migration using Golang Migrate.
 func migrateDb(t *testing.T, tc *testContainer) {
 	m, err := migrate.New(
-		"file://../../migration",
+		"file://../../migration/deploy",
 		tc.uri)
 	require.NoError(t, err)
 
