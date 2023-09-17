@@ -97,3 +97,6 @@ tags
 .vscode/settings.json
 .idea
 app.yaml
+
+.
+.gcloudignore
