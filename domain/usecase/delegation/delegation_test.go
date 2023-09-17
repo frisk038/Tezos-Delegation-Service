@@ -57,6 +57,7 @@ func TestUseCase_GetDelegations(t *testing.T) {
 
 		assert.NoError(t, err)
 		assert.Equal(t, dgs, got)
+		mr.AssertExpectations(t)
 	})
 	t.Run("err", func(t *testing.T) {
 		mr := &mockRepo{}
@@ -67,5 +68,6 @@ func TestUseCase_GetDelegations(t *testing.T) {
 
 		assert.Error(t, err)
 		assert.Nil(t, got)
+		mr.AssertExpectations(t)
 	})
 }

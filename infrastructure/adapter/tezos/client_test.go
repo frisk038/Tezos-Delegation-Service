@@ -186,6 +186,7 @@ func TestClient_getDelegations(t *testing.T) {
 		delegations, err := client.getDelegations(context.Background(), testTime0, 0)
 		assert.Error(t, err)
 		assert.Nil(t, delegations)
+		mh.AssertExpectations(t)
 	})
 
 	t.Run("api_not_200", func(t *testing.T) {

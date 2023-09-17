@@ -94,6 +94,7 @@ func TestGetDelegations(t *testing.T) {
 			}`,
 			w.Body.String(),
 		)
+		mu.AssertExpectations(t)
 	})
 
 	t.Run("success_with_offset", func(t *testing.T) {
@@ -125,6 +126,7 @@ func TestGetDelegations(t *testing.T) {
 			}`,
 			w.Body.String(),
 		)
+		mu.AssertExpectations(t)
 	})
 
 	t.Run("success_with_year", func(t *testing.T) {
@@ -156,6 +158,7 @@ func TestGetDelegations(t *testing.T) {
 			}`,
 			w.Body.String(),
 		)
+		mu.AssertExpectations(t)
 	})
 
 	t.Run("wrong_limit_format", func(t *testing.T) {
@@ -164,6 +167,7 @@ func TestGetDelegations(t *testing.T) {
 		GetDelegations(cfg, mu)(c)
 
 		assert.Equal(t, http.StatusBadRequest, w.Code)
+		mu.AssertExpectations(t)
 	})
 
 	t.Run("wrong_offset_format", func(t *testing.T) {
@@ -172,6 +176,7 @@ func TestGetDelegations(t *testing.T) {
 		GetDelegations(cfg, mu)(c)
 
 		assert.Equal(t, http.StatusBadRequest, w.Code)
+		mu.AssertExpectations(t)
 	})
 
 	t.Run("one_digit_year_format", func(t *testing.T) {
@@ -180,6 +185,7 @@ func TestGetDelegations(t *testing.T) {
 		GetDelegations(cfg, mu)(c)
 
 		assert.Equal(t, http.StatusBadRequest, w.Code)
+		mu.AssertExpectations(t)
 	})
 
 	t.Run("letter_year_format", func(t *testing.T) {
@@ -188,6 +194,7 @@ func TestGetDelegations(t *testing.T) {
 		GetDelegations(cfg, mu)(c)
 
 		assert.Equal(t, http.StatusBadRequest, w.Code)
+		mu.AssertExpectations(t)
 	})
 
 	t.Run("wrong_date_year_format", func(t *testing.T) {
@@ -196,6 +203,7 @@ func TestGetDelegations(t *testing.T) {
 		GetDelegations(cfg, mu)(c)
 
 		assert.Equal(t, http.StatusBadRequest, w.Code)
+		mu.AssertExpectations(t)
 	})
 
 	t.Run("limit_negative", func(t *testing.T) {
@@ -204,6 +212,7 @@ func TestGetDelegations(t *testing.T) {
 		GetDelegations(cfg, mu)(c)
 
 		assert.Equal(t, http.StatusBadRequest, w.Code)
+		mu.AssertExpectations(t)
 	})
 
 	t.Run("limit_over_max", func(t *testing.T) {
@@ -212,6 +221,7 @@ func TestGetDelegations(t *testing.T) {
 		GetDelegations(cfg, mu)(c)
 
 		assert.Equal(t, http.StatusBadRequest, w.Code)
+		mu.AssertExpectations(t)
 	})
 
 	t.Run("offset_negative", func(t *testing.T) {
@@ -220,6 +230,7 @@ func TestGetDelegations(t *testing.T) {
 		GetDelegations(cfg, mu)(c)
 
 		assert.Equal(t, http.StatusBadRequest, w.Code)
+		mu.AssertExpectations(t)
 	})
 
 	t.Run("fail_from_uc", func(t *testing.T) {
@@ -234,5 +245,6 @@ func TestGetDelegations(t *testing.T) {
 		GetDelegations(cfg, mu)(c)
 
 		assert.Equal(t, http.StatusInternalServerError, w.Code)
+		mu.AssertExpectations(t)
 	})
 }
