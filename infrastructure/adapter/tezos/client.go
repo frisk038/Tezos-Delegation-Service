@@ -10,22 +10,29 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/frisk038/tezos-delegation-service/config"
 	"github.com/frisk038/tezos-delegation-service/domain/entity"
 )
 
+// Config represents the configuration for the Tezos API client.
+type Config struct {
+	Url     string        `yaml:"url" env:"TEZOS-API"`
+	Timeout time.Duration `yaml:"timeout" env-default:"1s"`
+	Limit   int           `yaml:"limit" env-default:"1"`
+}
+
+// httpClient is an interface representing the HTTP client used for making requests.
 type httpClient interface {
 	Get(url string) (*http.Response, error)
 }
 
-// Client to the tezos api
+// Client is the Tezos API client.
 type Client struct {
 	Client httpClient
 	Url    *url.URL
 	Limit  int
 }
 
-// delegation struct used to parse the response of the api
+// delegation is a struct used to parse the response of the Tezos API.
 type delegation struct {
 	Amount int64  `json:"amount"`
 	Block  string `json:"block"`
@@ -36,23 +43,23 @@ type delegation struct {
 	TimeStamp string `json:"timestamp"`
 }
 
-// New creates a new instance of the client
-func New() (*Client, error) {
-	urlApi, err := url.Parse(config.Cfg.Tezos.Url)
+// New creates a new instance of the Tezos API client.
+func New(cfg Config) (*Client, error) {
+	urlApi, err := url.Parse(cfg.Url)
 	if err != nil {
 		return nil, err
 	}
 
 	return &Client{
 		Client: &http.Client{
-			Timeout: config.Cfg.Tezos.Timeout,
+			Timeout: cfg.Timeout,
 		},
 		Url:   urlApi,
-		Limit: config.Cfg.Tezos.Limit,
+		Limit: cfg.Limit,
 	}, nil
 }
 
-// GetDelegations gets delegation, it also handle pagination
+// GetDelegations gets delegations and handles pagination.
 func (c *Client) GetDelegations(ctx context.Context, startTime time.Time) ([]entity.Delegation, error) {
 	offset := 0
 	var result []entity.Delegation
@@ -73,7 +80,7 @@ func (c *Client) GetDelegations(ctx context.Context, startTime time.Time) ([]ent
 	return result, nil
 }
 
-// getDelegations get delegations from specified timestamp with an offset to skip what we already read
+// getDelegations retrieves delegations from the Tezos API starting from a specified timestamp with an offset to skip what has already been read.
 func (c *Client) getDelegations(_ context.Context, startTime time.Time, offset int) ([]entity.Delegation, error) {
 	q := c.Url.Query()
 	q.Set("timestamp.gt", startTime.Format(time.RFC3339))
@@ -88,7 +95,7 @@ func (c *Client) getDelegations(_ context.Context, startTime time.Time, offset i
 	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("api returned non-OK status: %v", resp.Status)
+		return nil, fmt.Errorf("API returned non-OK status: %v", resp.Status)
 	}
 
 	body, err := io.ReadAll(resp.Body)

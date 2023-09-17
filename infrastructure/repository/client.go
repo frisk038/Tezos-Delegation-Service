@@ -71,9 +71,9 @@ func (c *Client) InsertDelegations(ctx context.Context, dgs []entity.Delegation)
 	return nil
 }
 
-// SelectDelegations return a slice of delegation from the database, it also handles pagination.
+// SelectDelegations returns a slice of delegation from the database, it also handles pagination.
 func (c *Client) SelectDelegations(ctx context.Context, dgr entity.DelegationRequest) ([]entity.Delegation, error) {
-	param := []any{dgr.Limit, dgr.Offset}
+	param := []interface{}{dgr.Limit, dgr.Offset}
 	where := ""
 	if !dgr.Date.IsZero() {
 		where = whereClause
@@ -99,6 +99,7 @@ func (c *Client) SelectDelegations(ctx context.Context, dgr entity.DelegationReq
 	return res, rows.Err()
 }
 
+// SelectLastDelegation returns the timestamp of the last delegation entry in the database.
 func (c *Client) SelectLastDelegation(ctx context.Context) (time.Time, error) {
 	var lastUpdate time.Time
 	err := c.conn.QueryRow(ctx, selectLastDelegation).Scan(&lastUpdate)

@@ -12,15 +12,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// delegationGetter defines an interface for getting delegations.
 type delegationGetter interface {
 	GetDelegations(ctx context.Context, drq entity.DelegationRequest) ([]entity.Delegation, error)
 }
 
+// Config defines configuration parameters for the handler.
 type Config struct {
 	MaxLimit     int `yaml:"max-limit" env:"MAX-LIMIT" env-default:"100"`
 	DefaultLimit int `yaml:"default-limit" env:"DEFAULT-LIMIT" env-default:"10"`
 }
 
+// delegationJs represents the JSON response format for delegations.
 type delegationJs struct {
 	TimeStamp time.Time `json:"timestamp"`
 	Amount    int64     `json:"amount"`
@@ -28,6 +31,7 @@ type delegationJs struct {
 	Block     string    `json:"block"`
 }
 
+// GetDelegations is a Gin HTTP handler that retrieves delegations.
 // @Summary Get delegations
 // @Description Retrieve a list of delegations
 // @ID get-delegations
@@ -86,7 +90,7 @@ func GetDelegations(cfg Config, getter delegationGetter) gin.HandlerFunc {
 
 			tm, err = time.Parse(time.DateOnly, fmt.Sprintf("%d-01-01", year))
 			if err != nil {
-				_ = c.AbortWithError(http.StatusBadRequest, fmt.Errorf("cant format correct date with given year %w", err))
+				_ = c.AbortWithError(http.StatusBadRequest, fmt.Errorf("can't format correct date with given year %w", err))
 				return
 			}
 		}

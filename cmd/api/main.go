@@ -56,7 +56,7 @@ func initDeps(log *slog.Logger) error {
 		return err
 	}
 
-	tzApi, err := tezos.New()
+	tzApi, err := tezos.New(config.Cfg.Tezos)
 	if err != nil {
 		return err
 	}
