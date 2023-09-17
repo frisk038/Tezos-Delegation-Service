@@ -17,9 +17,8 @@ type delegationGetter interface {
 }
 
 type Config struct {
-	Port         string `yaml:"port" env:"PORT" env-default:":8080"`
-	MaxLimit     int    `yaml:"max-limit" env:"MAX-LIMIT" env-default:"100"`
-	DefaultLimit int    `yaml:"default-limit" env:"DEFAULT-LIMIT" env-default:"10"`
+	MaxLimit     int `yaml:"max-limit" env:"MAX-LIMIT" env-default:"100"`
+	DefaultLimit int `yaml:"default-limit" env:"DEFAULT-LIMIT" env-default:"10"`
 }
 
 type delegationJs struct {

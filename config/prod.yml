@@ -7,6 +7,5 @@ cron:
   spec: "*/10 * * * *"
 
 api:
-  port: ":8080"
   default-limit: 50
   max-limit: 100

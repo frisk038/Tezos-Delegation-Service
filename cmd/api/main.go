@@ -62,7 +62,12 @@ func main() {
 
 	dgUC := delegation.New(db)
 	router := handler.Init(config.Cfg.Api, dgUC)
-	err = router.Run(config.Cfg.Api.Port)
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		logger.Error("$PORT must be set")
+	}
+	err = router.Run(":" + port)
 	if err != nil {
 		logger.Error(err.Error())
 		return
