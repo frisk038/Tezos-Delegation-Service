@@ -1,13 +1,12 @@
-database:
-  url: localhostpg
-
-tezos-api:
+tezos-client:
   url: https://api.tzkt.io/v1/operations/delegations
-  timeout: 60
-  keep-alive: 60
+  timeout: 30s
+  limit: 100
 
 cron:
-  spec: "* * * * *"
+  spec: "*/10 * * * *"
 
 api:
-  - port: 8080
+  port: ":8080"
+  default-limit: 50
+  max-limit: 100

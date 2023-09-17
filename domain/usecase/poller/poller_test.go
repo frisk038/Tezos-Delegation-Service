@@ -70,8 +70,12 @@ func TestPoller_Fetch(t *testing.T) {
 	t.Run("last_date_empty", func(t *testing.T) {
 		mr := &mockRepo{}
 		mr.On("SelectLastDelegation", ctx).Return(time.Time{}, nil)
-
+		mr.On("InsertDelegations", ctx, dgs).Return(nil)
 		ma := &mockAPI{}
+		ma.On("GetDelegations",
+			ctx,
+			time.Date(tn.Year(), tn.Month(), tn.Day(), 0, 0, 0, 0, time.UTC),
+		).Return(dgs, nil)
 		p := New(mr, ma)
 
 		err := p.Fetch(ctx)

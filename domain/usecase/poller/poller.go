@@ -2,6 +2,7 @@ package poller
 
 import (
 	"context"
+	"time"
 
 	"github.com/frisk038/tezos-delegation-service/domain/adapter"
 	"github.com/frisk038/tezos-delegation-service/domain/repository"
@@ -25,7 +26,8 @@ func (uc *UseCase) Fetch(ctx context.Context) error {
 		return err
 	}
 	if lastDttm.IsZero() {
-		return nil
+		now := time.Now()
+		lastDttm = time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.UTC)
 	}
 
 	dgs, err := uc.api.GetDelegations(ctx, lastDttm)
