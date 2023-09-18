@@ -36,7 +36,7 @@ func TestClient_Integration(t *testing.T) {
 
 func testInsertDelegations(t *testing.T, c *Client) {
 	ctx := context.Background()
-	tm := time.Now().UTC()
+	tm := time.Now().UTC().Truncate(time.Millisecond)
 	dgs := []entity.Delegation{
 		{
 			Amount:    1000034,
