@@ -13,6 +13,7 @@
 </div>
 
 ---
+![Build Status](https://github.com/golangci/golangci-lint/workflows/CI/badge.svg)
 
 ## 📒 Table of Contents
 - [📒 Table of Contents](#-table-of-contents)
