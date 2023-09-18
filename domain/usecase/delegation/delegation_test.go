@@ -27,7 +27,7 @@ func (mr *mockRepo) SelectDelegations(ctx context.Context, dgr entity.Delegation
 
 func TestUseCase_GetDelegations(t *testing.T) {
 	ctx := context.Background()
-	tn := time.Now()
+	tn := time.Now().Truncate(time.Millisecond)
 	dgs := []entity.Delegation{
 		{
 			Amount:    1000034,
