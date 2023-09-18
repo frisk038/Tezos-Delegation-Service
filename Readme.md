@@ -13,7 +13,8 @@
 </div>
 
 ---
-![Build Status](https://github.com/golangci/golangci-lint/workflows/CI/badge.svg)
+https://github.com/frisk038/Tezos-Delegation-Service/actions/workflows/test.yml/badge.svg
+https://github.com/frisk038/Tezos-Delegation-Service/actions/workflows/golangci-lint.yml/badge.svg
 
 ## 📒 Table of Contents
 - [📒 Table of Contents](#-table-of-contents)
