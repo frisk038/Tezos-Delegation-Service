@@ -75,7 +75,7 @@ func testInsertDelegations(t *testing.T, c *Client) {
 
 func testSelectDelegations(t *testing.T, c *Client) {
 	ctx := context.Background()
-	tm := time.Now().UTC()
+	tm := time.Now().UTC().Truncate(time.Millisecond)
 	dgs := []entity.Delegation{
 		{
 			Amount:    425,
@@ -142,7 +142,7 @@ func testSelectDelegations(t *testing.T, c *Client) {
 
 func testSelectLastDelegation(t *testing.T, c *Client) {
 	ctx := context.Background()
-	tm := time.Now().UTC()
+	tm := time.Now().UTC().Truncate(time.Millisecond)
 	dgs := []entity.Delegation{
 		{
 			Amount:    1000034,
