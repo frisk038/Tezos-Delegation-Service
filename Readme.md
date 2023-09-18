@@ -19,7 +19,7 @@
 - [📍 Overview](#-overview)
 - [📂 Project Structure](#-project-structure)
 - [🚀 Getting Started](#-getting-started)
-  - [✔️ Prerequisites](#️-prerequisites)
+  - [✔️ Prerequisites](#-prerequisites)
   - [📦 Installation](#-installation)
   - [🎮 Using Tezos-Delegation-Service](#-using-tezos-delegation-service)
   - [🧪 Running Tests](#-running-tests)

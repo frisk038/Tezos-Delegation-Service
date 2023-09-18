@@ -15,8 +15,8 @@ type mockRepo struct {
 	mock.Mock
 }
 
-func (mu *mockRepo) GetDelegations(ctx context.Context, drq entity.DelegationRequest) ([]entity.Delegation, error) {
-	called := mu.Called(ctx, drq)
+func (mr *mockRepo) GetDelegations(ctx context.Context, drq entity.DelegationRequest) ([]entity.Delegation, error) {
+	called := mr.Called(ctx, drq)
 	return called.Get(0).([]entity.Delegation), called.Error(1)
 }
 

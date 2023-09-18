@@ -42,6 +42,8 @@ type delegationJs struct {
 // @Param year query int false "Filter by year (optional)"
 // @Success 200 {array} delegationJs
 // @Router /xtz/delegations [get]
+//
+//goland:noinspection GoPreferNilSlice
 func GetDelegations(cfg Config, getter delegationGetter) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var err error
