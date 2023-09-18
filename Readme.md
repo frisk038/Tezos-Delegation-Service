@@ -13,8 +13,8 @@
 </div>
 
 ---
-https://github.com/frisk038/Tezos-Delegation-Service/actions/workflows/test.yml/badge.svg
-https://github.com/frisk038/Tezos-Delegation-Service/actions/workflows/golangci-lint.yml/badge.svg
+![Tests Status](https://github.com/frisk038/Tezos-Delegation-Service/actions/workflows/test.yml/badge.svg)
+![Linter Status](https://github.com/frisk038/Tezos-Delegation-Service/actions/workflows/golangci-lint.yml/badge.svg)
 
 ## 📒 Table of Contents
 - [📒 Table of Contents](#-table-of-contents)
