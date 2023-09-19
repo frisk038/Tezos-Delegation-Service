@@ -113,3 +113,7 @@ func (c *Client) SelectLastDelegation(ctx context.Context) (time.Time, error) {
 
 	return lastUpdate, nil
 }
+
+func (c *Client) Close() {
+	c.conn.Close()
+}

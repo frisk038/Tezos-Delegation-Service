@@ -61,6 +61,7 @@ func initDeps(log *slog.Logger) error {
 	if err != nil {
 		return err
 	}
+	defer db.Close()
 
 	tzApi, err := tezos.New(config.Cfg.Tezos)
 	if err != nil {
@@ -73,6 +74,7 @@ func initDeps(log *slog.Logger) error {
 		return err
 	}
 	cr.Cr.Start()
+	defer cr.Cr.Stop()
 
 	dgUC := delegation.New(db)
 	router := handler.Init(config.Cfg.Api, dgUC)
