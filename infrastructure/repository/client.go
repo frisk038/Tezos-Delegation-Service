@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
@@ -104,7 +105,7 @@ func (c *Client) SelectLastDelegation(ctx context.Context) (time.Time, error) {
 	var lastUpdate time.Time
 	err := c.conn.QueryRow(ctx, selectLastDelegation).Scan(&lastUpdate)
 	if err != nil {
-		if err == pgx.ErrNoRows {
+		if errors.Is(err, pgx.ErrNoRows) {
 			return time.Time{}, nil
 		}
 		return time.Time{}, err
