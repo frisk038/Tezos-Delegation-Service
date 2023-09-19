@@ -90,8 +90,7 @@ cd Tezos-Delegation-Service
 ```sh
 docker-compose up
 ```
-It will pop a postgres db container, will build the service inside a go container. And start listening on port **:8080**
-We have to wait **1min+** for polling job to be executed and populate de api db
+It will pop a postgres db container, will build the service inside a go container. And start listening on port **:8080**. We have to wait **1min+** for polling job to be executed and populate de api db
 ### 🎮 Using Tezos-Delegation-Service
 
 ```sh
